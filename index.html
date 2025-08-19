@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YAMZZ OFFICIAL ID</title>
+  <title>Toko Akun Game</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,12 +11,12 @@
       background: linear-gradient(180deg, #0f172a, #1e1b4b);
       color: #fff;
     }
-  .nav{display:flex;justify-content:space-between;align-items:center;padding:18px;background:rgba(12,15,30,.8);}
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:18px;background:rgba(12,15,30,.8);}
     .brand{font-weight:800;color:var(--brand);font-size:26px;}
     .nav-icons{display:flex;gap:16px;}
     .icon svg{width:22px;height:22px;stroke:white;}
     .produk-container { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; padding:20px; }
-        .hero{text-align:center;padding:60px 20px;}
+    .hero{text-align:center;padding:60px 20px;}
     .t1{font-size:40px;font-weight:900;}
     .t2{font-size:40px;font-weight:900;color:#cfd3ff;}
     .sub{color:var(--muted);margin:18px auto;max-width:640px;}
@@ -24,7 +24,7 @@
     .btn{border:0;padding:14px 24px;border-radius:var(--radius-pill);font-weight:700;cursor:pointer;}
     .btn-primary{background:linear-gradient(90deg,var(--brand-2),var(--brand));color:white;}
     .btn-ghost{background:rgba(255,255,255,.08);color:white;}
-        .why{text-align:center;margin:50px auto;max-width:900px;padding:0 18px;}
+    .why{text-align:center;margin:50px auto;max-width:900px;padding:0 18px;}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
     .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;text-align:left;}
     .badge{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
@@ -36,11 +36,12 @@
       background:#1e1b4b;
       border-radius:16px;
       box-shadow:0 4px 10px rgba(0,0,0,.4);
-      padding:15px; width:160px; text-align:center;
+      padding:15px; width:200px; text-align:center;
     }
     .produk-card img { width:100%; border-radius:12px; }
     .produk-card h3 { margin:8px 0 5px; font-size:16px; }
-    .produk-card p { color:#a5b4fc; margin:0; }
+    .produk-card p { color:#a5b4fc; margin:0; font-size:14px; }
+    .produk-card .desc { font-size:12px; color:#d1d5db; margin:6px 0 0; min-height:32px; }
     .produk-card button {
       margin-top:10px; padding:8px 12px; border:none;
       border-radius:8px; background:linear-gradient(90deg,#6366f1,#8b5cf6);
@@ -62,6 +63,10 @@
       background:linear-gradient(90deg,#6366f1,#8b5cf6);
       border:none; border-radius:8px; color:#fff; font-weight:bold;
       cursor:pointer;
+    }
+    .form .product-desc {
+      background:#111827; padding:10px; border-radius:8px;
+      font-size:14px; color:#d1d5db; margin:10px 0;
     }
 
     .qris-box {
@@ -98,6 +103,7 @@
       </span>
     </div>
   </header>
+
   <section class="hero">
     <h1 class="t1">Mulai Belanja</h1>
     <h2 class="t2">Sekarang Juga!</h2>
@@ -108,7 +114,7 @@
     </div>
   </section>
   
-    <section class="why">
+  <section class="why">
     <h3>Mengapa Memilih Kami?</h3>
     <p>Kami memberikan nilai lebih pada setiap produk digital yang Anda beli.</p>
     <div class="grid">
@@ -129,10 +135,10 @@
 
   <div id="buyForm" class="form">
     <h3>Form Pembelian</h3>
+    <div id="productDesc" class="product-desc"></div>
     <input type="text" id="buyerName" placeholder="Nama Pembeli">
     <input type="text" id="buyerWA" placeholder="Nomor WhatsApp / Telegram">
     <select id="paymentMethod" onchange="toggleQris()"></select>
-    <!-- QRIS muncul di sini -->
     <div class="qris-box" id="qrisBox">
       <p>Scan QRIS untuk pembayaran:</p>
       <img id="downloads" src="qris.png" alt="QRIS">
@@ -173,7 +179,6 @@
       let div=document.createElement("div");
       div.className="produk-card";
 
-      // kalau ada banyak varian, tampilkan harga terendah
       let minHarga = p.variants && p.variants.length>0 ? 
         Math.min(...p.variants.map(v=>v.harga)) : (p.harga || 0);
 
@@ -181,6 +186,7 @@
         <img src="${p.img}" alt="${p.nama}">
         <h3>${p.nama}</h3>
         <p>Mulai Rp ${minHarga.toLocaleString()}</p>
+        <p class="desc">${p.deskripsi || ""}</p>
         <button onclick="beli(${i})">Beli</button>`;
       produkList.appendChild(div);
     });
@@ -190,7 +196,7 @@
     let payments = JSON.parse(localStorage.getItem("payments")||"{}");
     const select = document.getElementById("paymentMethod");
     select.innerHTML="";
-    payments["QRIS"] = "Scan QR"; // default QRIS
+    payments["QRIS"] = "Scan QR"; 
 
     for(const [k,v] of Object.entries(payments)){
       if(v) select.innerHTML+=`<option value="${k}">${k} (${v})</option>`;
@@ -214,21 +220,20 @@
     let form=document.getElementById("buyForm");
     form.style.display="block";
 
-    // kalau produk ada banyak varian, tampilkan dropdown pilihan
+    document.getElementById("productDesc").innerText = selectedProduct.deskripsi || "Tidak ada deskripsi.";
+
     if(selectedProduct.variants && selectedProduct.variants.length>0){
       let variantSelect=document.createElement("select");
       variantSelect.id="variantSelect";
       variantSelect.innerHTML = selectedProduct.variants
         .map((v,idx)=>`<option value="${idx}">${v.nama} - Rp ${v.harga.toLocaleString()}</option>`)
         .join("");
-      // kalau belum ada dropdown, tambahkan
       if(!document.getElementById("variantSelect")){
         form.insertBefore(variantSelect, document.getElementById("paymentMethod"));
       }else{
         document.getElementById("variantSelect").replaceWith(variantSelect);
       }
     } else {
-      // kalau produk tanpa varian → hapus dropdown
       let old=document.getElementById("variantSelect");
       if(old) old.remove();
     }
