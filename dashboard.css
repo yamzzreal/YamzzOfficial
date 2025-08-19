@@ -1,0 +1,110 @@
+/* General */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #f5f6fa;
+  color: #333;
+}
+
+h1, h2 {
+  margin: 0 0 10px;
+}
+
+.header {
+  background: #6c2bd9;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 900px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.preview {
+  display: block;
+  margin-top: 10px;
+  max-width: 150px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn.primary {
+  background: #6c2bd9;
+  color: white;
+}
+
+.btn.danger {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn.secondary {
+  background: #3498db;
+  color: white;
+}
+
+/* Product Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  background: #fafafa;
+}
+
+.product-card img {
+  max-width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Transaction List */
+.list .transaction-card {
+  border: 1px solid #eee;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  background: #fafafa;
+}

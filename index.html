@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toko Akun Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(180deg, #0f172a, #1e1b4b);
+      color: #fff;
+    }
+  .nav{display:flex;justify-content:space-between;align-items:center;padding:18px;background:rgba(12,15,30,.8);}
+    .brand{font-weight:800;color:var(--brand);font-size:26px;}
+    .nav-icons{display:flex;gap:16px;}
+    .icon svg{width:22px;height:22px;stroke:white;}
+    .produk-container { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; padding:20px; }
+        .hero{text-align:center;padding:60px 20px;}
+    .t1{font-size:40px;font-weight:900;}
+    .t2{font-size:40px;font-weight:900;color:#cfd3ff;}
+    .sub{color:var(--muted);margin:18px auto;max-width:640px;}
+    .actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+    .btn{border:0;padding:14px 24px;border-radius:var(--radius-pill);font-weight:700;cursor:pointer;}
+    .btn-primary{background:linear-gradient(90deg,var(--brand-2),var(--brand));color:white;}
+    .btn-ghost{background:rgba(255,255,255,.08);color:white;}
+        .why{text-align:center;margin:50px auto;max-width:900px;padding:0 18px;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+    .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;text-align:left;}
+    .badge{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+    .badge.blue{background:#3a6ee8;}
+    .badge.green{background:#1fbf5b;}
+    .card h4{margin:0 0 8px}
+    .card p{margin:0;color:#c7cfe3}
+    .produk-card {
+      background:#1e1b4b;
+      border-radius:16px;
+      box-shadow:0 4px 10px rgba(0,0,0,.4);
+      padding:15px; width:160px; text-align:center;
+    }
+    .produk-card img { width:100%; border-radius:12px; }
+    .produk-card h3 { margin:8px 0 5px; font-size:16px; }
+    .produk-card p { color:#a5b4fc; margin:0; }
+    .produk-card button {
+      margin-top:10px; padding:8px 12px; border:none;
+      border-radius:8px; background:linear-gradient(90deg,#6366f1,#8b5cf6);
+      color:#fff; font-weight:bold; cursor:pointer;
+    }
+
+    .form {
+      padding:20px; background:#1e1b4b; border-radius:16px;
+      max-width:400px; margin:20px auto; display:none;
+      box-shadow:0 4px 12px rgba(0,0,0,.5);
+    }
+    .form input, .form select {
+      width:100%; padding:10px; margin:6px 0;
+      border:1px solid #374151; border-radius:8px;
+      background:#111827; color:#fff;
+    }
+    .form button {
+      width:100%; padding:12px;
+      background:linear-gradient(90deg,#6366f1,#8b5cf6);
+      border:none; border-radius:8px; color:#fff; font-weight:bold;
+      cursor:pointer;
+    }
+
+    .qris-box {
+      text-align:center; margin-top:15px; display:none;
+    }
+    .qris-box img {
+      width:220px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,.4);
+    }
+
+    footer {
+      background:#0f172a; color:#9ca3af; text-align:center;
+      padding:20px; margin-top:30px; font-size:14px;
+    }
+    footer a { color:#a78bfa; text-decoration:none; margin: 0 8px; }
+
+    .contact-admin { text-align:center; margin:20px; display:none; }
+    .contact-admin a {
+      display:inline-block; padding:12px 18px; color:#fff; border-radius:8px;
+      text-decoration:none; font-weight:bold; margin:5px;
+    }
+    .wa-btn { background:#25D366; }
+    .tg-btn { background:#0088cc; }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">Yamzz Official</div>
+    <div class="nav-icons">
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4"/></svg>
+      </span>
+    </div>
+  </header>
+  <section class="hero">
+    <h1 class="t1">Mulai Belanja</h1>
+    <h2 class="t2">Sekarang Juga!</h2>
+    <p class="sub">Menjual produk digital terlengkap, cepat, dan terpercaya.<br>Solusi instan untuk semua kebutuhan digitalmu!</p>
+    <div class="actions">
+      <button class="btn btn-primary">Beli Sekarang</button>
+      <button class="btn btn-ghost">Support</button>
+    </div>
+  </section>
+  
+    <section class="why">
+    <h3>Mengapa Memilih Kami?</h3>
+    <p>Kami memberikan nilai lebih pada setiap produk digital yang Anda beli.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="badge blue">📥</div>
+        <h4>Akses Instan</h4>
+        <p>Unduh & gunakan produk langsung setelah pembayaran berhasil.</p>
+      </div>
+      <div class="card">
+        <div class="badge green">🔄</div>
+        <h4>Update Gratis</h4>
+        <p>Nikmati semua pembaruan fitur dan perbaikan selamanya.</p>
+      </div>
+    </div>
+  </section>
+  
+  <div class="produk-container" id="produkList"></div>
+
+  <div id="buyForm" class="form">
+    <h3>Form Pembelian</h3>
+    <input type="text" id="buyerName" placeholder="Nama Pembeli">
+    <input type="text" id="buyerWA" placeholder="Nomor WhatsApp / Telegram">
+    <select id="paymentMethod" onchange="toggleQris()"></select>
+    <!-- QRIS muncul di sini -->
+    <div class="qris-box" id="qrisBox">
+      <p>Scan QRIS untuk pembayaran:</p>
+      <img id="downloads" src="qris.png" alt="QRIS">
+    </div>
+    <button onclick="submitOrder()">Bayar Sekarang</button>
+  </div>
+
+  <div id="contactAdmin" class="contact-admin">
+    <p>✅ Pesanan berhasil! Silakan hubungi admin untuk konfirmasi:</p>
+    <a id="waLink" href="#" target="_blank" class="wa-btn">💬 WhatsApp Admin</a>
+    <a id="tgLink" href="#" target="_blank" class="tg-btn">📨 Telegram Admin</a>
+  </div>
+
+  <footer>
+    <p>📞 Hubungi Admin:</p>
+    <p>
+      <a href="https://wa.me/6285122331305" target="_blank">WhatsApp</a> | 
+      <a href="https://t.me/yamzzoffc" target="_blank">Telegram</a>
+    </p>
+    <p>© 2025 Yamzz Official. All rights reserved.</p>
+  </footer>
+
+<script>
+  let selectedProduct = null;
+  let selectedVariant = null;
+  const adminNumber = "6285122331305";
+  const adminTelegram = "yamzzoffc";
+
+  function loadProducts(){
+    let products = JSON.parse(localStorage.getItem("products")||"[]");
+    const produkList = document.getElementById("produkList");
+    produkList.innerHTML="";
+    if(products.length===0){
+      produkList.innerHTML="<p>Belum ada produk. Silakan tambah di dashboard admin.</p>";
+      return;
+    }
+    products.forEach((p,i)=>{
+      let div=document.createElement("div");
+      div.className="produk-card";
+
+      // kalau ada banyak varian, tampilkan harga terendah
+      let minHarga = p.variants && p.variants.length>0 ? 
+        Math.min(...p.variants.map(v=>v.harga)) : (p.harga || 0);
+
+      div.innerHTML=`
+        <img src="${p.img}" alt="${p.nama}">
+        <h3>${p.nama}</h3>
+        <p>Mulai Rp ${minHarga.toLocaleString()}</p>
+        <button onclick="beli(${i})">Beli</button>`;
+      produkList.appendChild(div);
+    });
+  }
+
+  function loadPayments(){
+    let payments = JSON.parse(localStorage.getItem("payments")||"{}");
+    const select = document.getElementById("paymentMethod");
+    select.innerHTML="";
+    payments["QRIS"] = "Scan QR"; // default QRIS
+
+    for(const [k,v] of Object.entries(payments)){
+      if(v) select.innerHTML+=`<option value="${k}">${k} (${v})</option>`;
+    }
+    if(!select.innerHTML) select.innerHTML="<option>Tidak ada metode pembayaran</option>";
+  }
+
+  function toggleQris(){
+    let method = document.getElementById("paymentMethod").value;
+    let qrisBox = document.getElementById("qrisBox");
+    qrisBox.style.display = method.includes("QRIS") ? "block" : "none";
+  }
+
+  function beli(i){
+    let products=JSON.parse(localStorage.getItem("products")||"[]");
+    selectedProduct=products[i];
+    selectedVariant=null;
+
+    loadPayments();
+
+    let form=document.getElementById("buyForm");
+    form.style.display="block";
+
+    // kalau produk ada banyak varian, tampilkan dropdown pilihan
+    if(selectedProduct.variants && selectedProduct.variants.length>0){
+      let variantSelect=document.createElement("select");
+      variantSelect.id="variantSelect";
+      variantSelect.innerHTML = selectedProduct.variants
+        .map((v,idx)=>`<option value="${idx}">${v.nama} - Rp ${v.harga.toLocaleString()}</option>`)
+        .join("");
+      // kalau belum ada dropdown, tambahkan
+      if(!document.getElementById("variantSelect")){
+        form.insertBefore(variantSelect, document.getElementById("paymentMethod"));
+      }else{
+        document.getElementById("variantSelect").replaceWith(variantSelect);
+      }
+    } else {
+      // kalau produk tanpa varian → hapus dropdown
+      let old=document.getElementById("variantSelect");
+      if(old) old.remove();
+    }
+
+    window.scrollTo({top:form.offsetTop, behavior:"smooth"});
+  }
+
+  function submitOrder(){
+    const name=document.getElementById("buyerName").value;
+    const wa=document.getElementById("buyerWA").value;
+    const pay=document.getElementById("paymentMethod").value;
+    if(!name||!wa||!selectedProduct){alert("Lengkapi data!");return;}
+
+    let hargaFinal=0, namaVarian="";
+    if(selectedProduct.variants && selectedProduct.variants.length>0){
+      let idx=parseInt(document.getElementById("variantSelect").value);
+      let v=selectedProduct.variants[idx];
+      hargaFinal=v.harga;
+      namaVarian=v.nama;
+    } else {
+      hargaFinal=selectedProduct.harga||0;
+      namaVarian="Default";
+    }
+
+    let order={
+      nama:name,
+      wa:wa,
+      produk:selectedProduct.nama+" - "+namaVarian,
+      harga:hargaFinal,
+      bayar:pay,
+      status:"Belum Dibayar"
+    };
+    let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+    orders.push(order);
+    localStorage.setItem("orders",JSON.stringify(orders));
+
+    let pesan = `Halo Admin, saya ingin konfirmasi pesanan:\n\nNama: ${name}\nWhatsApp: ${wa}\nProduk: ${order.produk}\nHarga: Rp ${order.harga.toLocaleString()}\nMetode Bayar: ${pay}`;
+    document.getElementById("waLink").href = `https://wa.me/${adminNumber}?text=${encodeURIComponent(pesan)}`;
+    document.getElementById("tgLink").href = `https://t.me/${adminTelegram}?text=${encodeURIComponent(pesan)}`;
+
+    document.getElementById("contactAdmin").style.display = "block";
+    document.getElementById("buyForm").style.display="none";
+    window.scrollTo({top:document.getElementById("contactAdmin").offsetTop, behavior:"smooth"});
+  }
+
+  loadProducts();
+</script>
+
+</body>
+</html>

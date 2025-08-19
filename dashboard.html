@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin</title>
+  <style>
+    body { font-family:Arial, sans-serif; background: linear-gradient(180deg, #0f172a, #1e1b4b); color:black; margin:0; }
+    header {
+      background: transparent;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      color: #a78bfa; /* ungu soft */
+      font-size: 26px;
+      margin: 0;
+    }
+    nav { background:#a78bfa; padding:10px; text-align:center; }
+    nav button { margin:5px; padding:8px 12px; border:none; border-radius:6px; cursor:pointer; background:#6a0dad; color:white; }
+    .container { padding:20px; }
+    table { width:100%; border-collapse:collapse; background:#a78bfa; border-radius:10px; overflow:hidden; margin-top:10px; font-size: 15px;}
+    th,td { padding:10px; border:1px solid #ccc; text-align:center; }
+    button { padding:5px 10px; margin:2px; border:none; border-radius:6px; cursor:pointer; }
+    .done { background:#16a34a; color:white; }
+    .pending { background:#ef4444; color:white; }
+    .edit { background:#f59e0b; color:white; }
+    .form { background:white; padding:20px; border-radius:12px; margin:20px 0; }
+    .notif-popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #25d366;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,.2);
+      display: none;
+      z-index: 9999;
+    .form input, .form select { width:100%; padding:8px; margin:6px 0; border:1px solid #ccc; border-radius:6px; }
+    img { max-width:60px; border-radius:6px; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>📊 Dashboard Admin</h1>
+</header>
+<nav>
+  <button onclick="showTab('orders')">Transaksi</button>
+  <button onclick="showTab('products')">Produk</button>
+  <button onclick="showTab('payments')">Nomor Pembayaran</button>
+  <button onclick="logout()">Logout</button>
+</nav>
+
+<div class="container">
+
+  <!-- TAB TRANSAKSI -->
+  <div id="orders" class="tab">
+    <h2>📦 Transaksi</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th><th>WhatsApp</th><th>Produk</th><th>Harga</th><th>Pembayaran</th><th>Status</th><th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="orderTable"></tbody>
+    </table>
+  </div>
+
+<!-- TAB PRODUK -->
+<div id="products" class="tab" style="display:none">
+  <h2>🛒 Produk</h2>
+  <div class="form">
+    <h3>Tambah Produk</h3>
+    <input type="text" id="pName" placeholder="Nama Produk">
+    <input type="file" id="pImgFile" accept="image/*">
+
+    <h4>Varian & Harga</h4>
+    <div id="variantList"></div>
+    <button type="button" onclick="addVariantInput()">+ Tambah Varian</button><br><br>
+
+    <button onclick="addProduct()">Tambah Produk</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nama</th><th>Varian & Harga</th><th>Gambar</th><th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="productTable"></tbody>
+  </table>
+</div>
+
+
+  <!-- TAB PEMBAYARAN -->
+  <div id="payments" class="tab" style="display:none">
+    <h2>💳 Nomor Pembayaran</h2>
+    <div class="form">
+      <label>Dana</label>
+      <input type="text" id="payDana">
+      <label>OVO</label>
+      <input type="text" id="payOVO">
+      <label>Gopay</label>
+      <input type="text" id="payGopay">
+      <button onclick="savePayments()">Simpan</button>
+    </div>
+  </div>
+
+</div>
+
+<div id="notifPopup" class="notif-popup">🔔 Order baru masuk!</div>
+
+<script>
+   // cek login admin
+  if(sessionStorage.getItem("admin")!=="true"){ window.location="admin-login.html"; }
+
+  function showTab(tab){
+    document.querySelectorAll(".tab").forEach(t=>t.style.display="none");
+    document.getElementById(tab).style.display="block";
+    if(tab==="orders") loadOrders();
+    if(tab==="products") loadProducts();
+    if(tab==="payments") loadPayments();
+  }
+
+  // ---------------- ORDERS ----------------
+  function loadOrders(){
+    let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+    const table=document.getElementById("orderTable");
+    table.innerHTML="";
+    orders.forEach((o,i)=>{
+      let tr=document.createElement("tr");
+      tr.innerHTML=`
+        <td contenteditable="true" onblur="editOrder(${i},'nama',this.innerText)">${o.nama}</td>
+        <td contenteditable="true" onblur="editOrder(${i},'wa',this.innerText)">${o.wa}</td>
+        <td>${o.produk}</td>
+        <td>Rp ${o.harga.toLocaleString()}</td>
+        <td contenteditable="true" onblur="editOrder(${i},'bayar',this.innerText)">${o.bayar}</td>
+        <td>${o.status}</td>
+        <td>
+          <button class="done" onclick="updateStatus(${i},'Lunas')">Lunas</button>
+          <button class="pending" onclick="updateStatus(${i},'Belum Dibayar')">Belum</button>
+        </td>`;
+      table.appendChild(tr);
+    });
+  }
+
+  function updateStatus(i,status){
+    let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+    orders[i].status=status;
+    localStorage.setItem("orders",JSON.stringify(orders));
+    loadOrders();
+  }
+
+  function editOrder(i,key,val){
+    let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+    orders[i][key]=val;
+    localStorage.setItem("orders",JSON.stringify(orders));
+  }
+
+  // ---------------- PRODUCTS ----------------
+  function addVariantInput(name="", price="") {
+    let div = document.createElement("div");
+    div.className="variant-box";
+    div.innerHTML = `
+      <input type="text" placeholder="Nama Varian" value="${name}">
+      <input type="number" placeholder="Harga" value="${price}">
+      <button type="button" onclick="this.parentElement.remove()">❌</button>
+    `;
+    document.getElementById("variantList").appendChild(div);
+  }
+
+  function addProduct(){
+    let name=document.getElementById("pName").value;
+    let fileInput=document.getElementById("pImgFile");
+
+    if(!name){
+      alert("Isi nama produk!");
+      return;
+    }
+    if(fileInput.files.length===0){
+      alert("Pilih gambar produk!");
+      return;
+    }
+
+    let variants=[];
+    document.querySelectorAll("#variantList .variant-box").forEach(v=>{
+      let vName=v.querySelector("input[type=text]").value;
+      let vPrice=parseInt(v.querySelector("input[type=number]").value);
+      if(vName && vPrice){
+        variants.push({nama:vName,harga:vPrice});
+      }
+    });
+    if(variants.length===0){
+      alert("Tambahkan minimal 1 varian!");
+      return;
+    }
+
+    let reader=new FileReader();
+    reader.onload=function(e){
+      let imgBase64=e.target.result;
+      let products=JSON.parse(localStorage.getItem("products")||"[]");
+      products.push({nama:name,variants:variants,img:imgBase64});
+      localStorage.setItem("products",JSON.stringify(products));
+      loadProducts();
+      alert("Produk berhasil ditambahkan!");
+      document.getElementById("pName").value="";
+      document.getElementById("variantList").innerHTML="";
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  }
+
+  function loadProducts(){
+    let products=JSON.parse(localStorage.getItem("products")||"[]");
+    const table=document.getElementById("productTable");
+    table.innerHTML="";
+    products.forEach((p,i)=>{
+      let varianHTML=p.variants.map((v,vi)=>
+        `<div contenteditable="true" onblur="editVariant(${i},${vi},'nama',this.innerText)">${v.nama}</div>
+         <div contenteditable="true" onblur="editVariant(${i},${vi},'harga',this.innerText)">Rp ${v.harga.toLocaleString()}</div>`
+      ).join("<hr>");
+      let tr=document.createElement("tr");
+      tr.innerHTML=`
+        <td contenteditable="true" onblur="editProduct(${i},'nama',this.innerText)">${p.nama}</td>
+        <td>${varianHTML}</td>
+        <td><img src="${p.img}" alt="gambar"></td>
+        <td><button class="pending" onclick="deleteProduct(${i})">Hapus</button></td>`;
+      table.appendChild(tr);
+    });
+  }
+
+  function editProduct(i,key,val){
+    let products=JSON.parse(localStorage.getItem("products")||"[]");
+    products[i][key]=val;
+    localStorage.setItem("products",JSON.stringify(products));
+  }
+
+  function editVariant(prodIndex,varIndex,key,val){
+    let products=JSON.parse(localStorage.getItem("products")||"[]");
+    if(key==="harga") val=parseInt(val.replace(/\D/g,""))||0;
+    products[prodIndex].variants[varIndex][key]=val;
+    localStorage.setItem("products",JSON.stringify(products));
+  }
+
+  function deleteProduct(i){
+    let products=JSON.parse(localStorage.getItem("products")||"[]");
+    products.splice(i,1);
+    localStorage.setItem("products",JSON.stringify(products));
+    loadProducts();
+  }
+
+  // ---------------- PAYMENTS ----------------
+  function loadPayments(){
+    let payments=JSON.parse(localStorage.getItem("payments")||"{}");
+    document.getElementById("payDana").value=payments.Dana||"";
+    document.getElementById("payOVO").value=payments.OVO||"";
+    document.getElementById("payGopay").value=payments.Gopay||"";
+  }
+
+  function savePayments(){
+    let payments={
+      Dana:document.getElementById("payDana").value,
+      OVO:document.getElementById("payOVO").value,
+      Gopay:document.getElementById("payGopay").value,
+    };
+    localStorage.setItem("payments",JSON.stringify(payments));
+    alert("Nomor pembayaran tersimpan!");
+  }
+
+  function showNotification(){
+    const popup = document.getElementById("notifPopup");
+    popup.style.display="block";
+    setTimeout(()=>{ popup.style.display="none"; },3000);
+  }
+
+  // ---------------- LOGOUT ----------------
+  function logout(){
+    sessionStorage.removeItem("admin");
+    window.location="admin-login.html";
+  }
+
+  // default load
+  showTab('orders');
+
+  // ---------------- LOGOUT ----------------
+  function logout(){
+    sessionStorage.removeItem("admin");
+    window.location="admin-login.html";
+  }
+
+  // default load
+  showTab('orders');
+</script>
+</body>
+</html>
