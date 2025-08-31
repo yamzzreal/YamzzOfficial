@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produk - Red Dark Neon</title>
+<style>
+body {background-color: #0d0d0d; color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0;}
+header {text-align: center; padding: 2rem; background: linear-gradient(90deg, #ff0000, #800000); color: #fff; font-size: 2rem; font-weight: bold; text-shadow: 0 0 10px red;}
+.container {display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; padding: 2rem;}
+.card {background: rgba(20, 20, 20, 0.9); border: 1px solid #ff0000; border-radius: 12px; padding: 1rem; text-align: center; box-shadow: 0 0 15px red;}
+.card img {width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;}
+.card h2 {color: #ff4444; text-shadow: 0 0 8px red;}
+.btn {display: inline-block; margin-top: 1rem; padding: 0.7rem 1.5rem; background: #ff0000; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; text-shadow: 0 0 5px black; transition: 0.3s;}
+.btn:hover {background: #cc0000; box-shadow: 0 0 10px red;}
+.testimoni {margin: 2rem; padding: 1.5rem; background: rgba(20, 20, 20, 0.8); border: 1px solid #ff0000; border-radius: 12px; box-shadow: 0 0 15px red;}
+.testimoni h3 {text-align: center; color: #ff4444;}
+.modal {display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center;}
+.modal-content {background: #1a1a1a; padding: 2rem; border-radius: 12px; border: 1px solid #ff0000; width: 90%; max-width: 400px; box-shadow: 0 0 20px red;}
+.modal-content h2 {text-align: center; margin-bottom: 1rem; color: #ff4444;}
+.modal-content input, .modal-content select {width: 100%; padding: 0.7rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ff0000; background: #0d0d0d; color: #fff;}
+.close {color: #fff; float: right; font-size: 1.5rem; cursor: pointer;}
+.pay-btn {display: block; width: 100%; margin: 0.5rem 0; padding: 0.7rem; background: #ff4444; border: none; border-radius: 8px; color: #fff; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none;}
+.pay-btn:hover {background: #cc0000; box-shadow: 0 0 10px red;}
+#loading {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);color:#fff;font-size:20px;text-align:center;padding-top:20%;z-index:9999;}
+/* khusus modal QRIS */
+#qrisModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+</style>
+</head>
+<body>
+  <audio class="audio-background" id="bg-audio" autoplay loop muted hidden>
+  <source src="audio.mp3" type="audio/mpeg">
+  Browsermu tidak mendukung audio.
+</audio>
+<header>🔥Yamzz Official🔥</header>
+
+<div class="container">
+  <div class="card">
+    <img src="image/berkas.jpg" alt="Script Bot">
+    <h2>Base Script Bot</h2>
+    <p>Belajar Gunakan Base Script Tinggal Pakai Dan Bisa Di update Jika Error</p>
+    <button class="btn" onclick="openModal('Base Script Bot')">Beli Sekarang</button>
+  </div>
+  <div class="card">
+    <img src="https://files.catbox.moe/vgd8s2.jpg" alt="Panel Pterodactyl">
+    <h2>Panel Pterodactyl</h2>
+    <p>Dapatkan Panel Anti Delay & Anti colong dengan garansi 1 Bulan.</p>
+    <button class="btn" onclick="openModal('Panel Pterodactyl')">Beli Sekarang</button>
+  </div>
+  <div class="card">
+    <img src="https://files.catbox.moe/ihftpm.jpg" alt="Partner Pribadi">
+    <h2>Partner Pribadi</h2>
+    <p>Dapatkan Keuntungan Hasil Join Patner kami.</p>
+    <button class="btn" onclick="openModal('Partner Pribadi')">Beli Sekarang</button>
+  </div>
+</div>
+
+<div class="testimoni">
+  <h3>💬 Testimoni Pelanggan</h3>
+  <p>"Produk sangat membantu! Panelnya mudah dipakai." - Andi</p>
+  <p>"Botnya keren, bikin kerjaan jadi lebih cepat." - Budi</p>
+  <p>"Partner pribadi bikin saya merasa eksklusif." - Sinta</p>
+</div>
+
+<!-- Modal Gabungan -->
+<div class="modal" id="mainModal">
+  <div class="modal-content" id="step1">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Form Pembelian</h2>
+    <input type="text" id="nama" placeholder="Nama Anda" required>
+    <input type="text" id="email" placeholder="Username Telegram / WhatsApp" required>
+    <select id="produk" onchange="toggleVarian()">
+      <option value="">-- Pilih Produk --</option>
+      <option value="Base Script Bot">Script Bot</option>
+      <option value="Panel Pterodactyl">Panel Pterodactyl</option>
+      <option value="Partner Pribadi">Partner Pribadi</option>
+    </select>
+    <select id="varian-script" style="display:none;">
+      <option value="Base Telegram 20K">Base Telegram 20K</option>
+      <option value="Base Whatsapp 15K">Base Whatsapp 15K</option>
+      <option value="Base Cpanel 35K">Base Cpanel 35K</option>
+      <option value="Base Website Payment 50K">Base Website Payment 50K</option>
+    </select>
+    <select id="varian-panel" style="display:none;">
+      <option value="2GB 1K">2GB 1K</option>
+      <option value="4GB 2K">4GB 2K</option>
+      <option value="6GB 3K">6GB 3K</option>
+      <option value="8GB 4K">8GB 4K</option>
+      <option value="10GB 5K">10GB 5K</option>
+      <option value="UNLI 7K">UNLI 7K</option>
+      <option value="RESELLER PANEL 10K">RESELLER PANEL 10K</option>
+      <option value="ADMIN PANEL 15K">ADMIN PANEL 15K</option>
+    </select>
+    <button class="btn" onclick="nextStep()">Lanjutkan Pembayaran</button>
+  </div>
+
+  <div class="modal-content" id="step2" style="display:none;">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Pilih Metode Pembayaran</h2>
+    <button class="pay-btn" onclick="selectPayment('08567858991')">GOPAY</button>
+    <button class="pay-btn" onclick="selectPayment('08567858991')">Dana</button>
+    <button class="pay-btn" onclick="selectPayment('081234567892')">Seabank</button>
+    <button class="pay-btn" onclick="selectPayment('QRIS')">QRIS</button>
+  </div>
+
+  <div class="modal-content" id="step3" style="display:none;">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Upload Bukti Pembayaran</h2>
+    <input type="file" id="buktiPembayaran" accept="image/*" required>
+    <button class="btn" onclick="konfirmasiPembayaran()">Konfirmasi</button>
+  </div>
+
+  <div class="modal-content" id="step4" style="display:none;">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Hubungi Admin Untuk konfirmasi Pesanan</h2>
+    <button class="pay-btn" onclick="window.open('https://t.me/yamzzoffc','_blank')">Telegram</button>
+    <button class="pay-btn" onclick="window.open('https://wa.me/6285122331305','_blank')">WhatsApp</button>
+  </div>
+</div>
+
+<!-- Modal QRIS -->
+<div class="modal" id="qrisModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeQris()">&times;</span>
+    <h2>Scan QRIS</h2>
+    <img src="image/qris.jpg" alt="QRIS" style="width:100%;border-radius:8px;box-shadow:0 0 15px red;">
+    <p style="text-align:center;margin-top:10px;">Silahkan Scan atau Download QRIS untuk melanjutkan pembayaran</p>
+    <a href="image/qris.jpg" download="QRIS-Yamzz" class="btn" style="display:block;text-align:center;margin-bottom:10px;">Download QRIS</a>
+    <button class="btn" onclick="qrisDone()">Sudah Bayar</button>
+  </div>
+</div>
+
+<div id="loading">⏳ Loading Tunggu Sebentar...</div>
+
+<script>
+const BOT_TOKEN = "8403826843:AAHAhT6-ZxPNuSdGcd10IC5r7_yG6aqo32w";
+const CHAT_ID  = "-1002694360377";
+
+const mainModal = document.getElementById('mainModal');
+const step1 = document.getElementById('step1');
+const step2 = document.getElementById('step2');
+const step3 = document.getElementById('step3');
+const step4 = document.getElementById('step4');
+const produkSelect = document.getElementById('produk');
+
+function openModal(produk){
+  mainModal.style.display='flex';
+  produkSelect.value=produk;
+  toggleVarian();
+  showStep(1);
+}
+function closeModal(){mainModal.style.display='none';}
+function toggleVarian(){
+  document.getElementById('varian-script').style.display = (produkSelect.value==='Base Script Bot')?'block':'none';
+  document.getElementById('varian-panel').style.display  = (produkSelect.value==='Panel Pterodactyl')?'block':'none';
+}
+function showStep(step){
+  step1.style.display=step===1?'block':'none';
+  step2.style.display=step===2?'block':'none';
+  step3.style.display=step===3?'block':'none';
+  step4.style.display=step===4?'block':'none';
+}
+function nextStep(){showStep(2);}
+function selectPayment(number){
+  if(number==='QRIS'){
+    document.getElementById('qrisModal').style.display='flex';
+  } else {
+    alert('Silahkan transfer ke: '+number);
+    showStep(3);
+  }
+}
+function closeQris(){
+  document.getElementById('qrisModal').style.display='none';
+}
+function qrisDone(){
+  document.getElementById('qrisModal').style.display='none';
+  showStep(3);
+}
+async function konfirmasiPembayaran(){
+  const fileInput = document.getElementById('buktiPembayaran');
+  if(fileInput.files.length===0){alert('Pilih file bukti pembayaran'); return;}
+  const nama = document.getElementById('nama').value;
+  const email = document.getElementById('email').value;
+  const produk = produkSelect.value;
+  let varian = '';
+  if(document.getElementById('varian-script').style.display==='block') varian=document.getElementById('varian-script').value;
+  if(document.getElementById('varian-panel').style.display==='block') varian=document.getElementById('varian-panel').value;
+
+  const message = `📌 *Order Baru Masuk*\n👤 Nama: ${nama}\n📧 Wa/User: ${email}\n🛒 Produk: ${produk}\n📦 Varian: ${varian||'-'}`;
+
+  document.getElementById('loading').style.display='block';
+
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({chat_id:CHAT_ID,text:message,parse_mode:'Markdown'})
+  });
+
+  const formData=new FormData();
+  formData.append('chat_id',CHAT_ID);
+  formData.append('caption',`📤 Bukti pembayaran dari *${nama}*`);
+  formData.append('photo',fileInput.files[0]);
+
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{
+    method:'POST',
+    body:formData
+  });
+
+  document.getElementById('loading').style.display='none';
+  alert('Bukti Transfer berhasil dikirim, Silahkan Hubungi Admin Untuk Konfirmasi Pesanan!');
+  showStep(4);
+}
+
+window.onclick = function(event){
+  if(event.target===mainModal) closeModal();
+  if(event.target===document.getElementById('qrisModal')) closeQris();
+}
+document.addEventListener('click', () => {
+  const video = document.getElementById('bg-audio');
+  video.muted = false; // lepas mute setelah klik
+  video.play(); // pastikan video mulai
+}, { once: true }); // cukup satu kali klik
+</script>
+</body>
+</html>

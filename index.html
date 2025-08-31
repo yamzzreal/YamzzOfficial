@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yamzz Official</title>
+  <style>
+    /* Reset */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height: 100%; font-family: 'Arial', sans-serif; }
+
+    /* Background gradien gelap */
+    body {
+      background-image: url('');
+      display: fixed;
+      font-family: "Times New Roman", Times, serif;
+      font-weight: bold;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0a0a0a, #1a0000, #0a0a0a);
+      overflow: hidden;
+      color: #fff;
+    }
+    /* Latar belakang video */
+    .video-background {
+      position: absolute;
+      top:0; left:0; width:100%; height:100%;
+      object-fit: cover;
+      z-index:-1;
+      filter: blur(5px);
+      opacity: 0.8;
+    }
+
+    /* Overlay gelap */
+
+    /* Kontainer utama */
+    .container {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    /* Foto / logo di atas judul */
+    .logo-img {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      border: 3px solid #ff4d4d;
+      object-fit: cover;
+      box-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d;
+    }
+
+    /* Judul Neon */
+    h1 {
+      font-size: 3rem;
+      color: white;
+      text-shadow: 0 0 5px #ff4d4d, 0 0 10px #ff4d4d, 0 0 20px #ff4d4d;
+      margin-bottom: 40px;
+    }
+
+    /* Tombol link neon */
+    .link-btn {
+      display: block;
+      width: 400px;
+      margin: 20px auto;
+      padding: 5px 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ff4d4d;
+      text-decoration: none;
+      border: none;
+      border-radius: 15px;
+      background: rgba(0,0,0,0.4);
+      color: #ff4d4d;
+      box-shadow: #ff4d4d;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .link-btn:hover {
+      background: #ff4d4d;
+      color: #fff;
+      box-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d, 0 0 30px #ff4d4d;
+      transform: scale(1.05);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 150px;
+      font-size: 15px;
+      color: #ff4d4d;
+      opacity: 0.6;
+      text-shadow: 0 0 5px #ff4d4d;
+    }
+  </style>
+</head>
+<body>
+  <!--Music Background -->
+  <!-- Video Background -->
+<video class="video-background" id="bg-video" autoplay loop muted playsinline>
+  <source src="background.mp4" type="video/mp4">
+  Browsermu tidak mendukung video.
+</video>
+
+  <div class="overlay"></div>
+  <div class="container">
+
+    <!-- Foto / Logo -->
+    <img src="logo.jpg" alt="Logo" class="logo-img">
+
+    <!-- Judul -->
+    <h1>Yamzz Official</h1>
+
+    <!-- Link Buttons -->
+    <a href="https://t.me/yamzzoffc" class="link-btn" target="_blank">Telegram</a>
+    <a href="https://instagram.com/" class="link-btn" target="_blank">Instagram</a>
+    <a href="https://youtube.com/@yamzzstore?si=FyY7AajbtHQ0-Wcw" class="link-btn" target="_blank">YouTube</a>
+    <a href="product.html" class="link-btn" target="_blank">Produk</a>
+    <a href="https://chat.whatsapp.com/K2MsdnZmBecJUKweb9hfys" class="link-btn" target="_blank">Grub Whatsapp</a>
+    <h2> Saluran Admin</h2>
+    <a href="https://whatsapp.com/channel/0029VbAONJRJENy9S9CrqD2f" class="link-btn" target="_blank"> Saluran Whatsapp</a>
+    <a href="https://t.me/yamzzreal213" class="link-btn" target="_blank">Saluran Telegram</a>
+    <a href="https://t.me/GudangScript" class="link-btn" target="_blank">Saluran Gudang Script</a> 
+
+    <footer>©Copyright Yamzz Official 2023</footer>
+  </div>
+
+<script>
+   document.addEventListener('click', () => {
+  const video = document.getElementById('bg-video');
+  video.muted = false; // lepas mute setelah klik
+  video.play(); // pastikan video mulai
+}, { once: true }); // cukup satu kali klik
+</script>
+</body>
+</html>
