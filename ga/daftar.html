@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar Peserta & Acak Pemenang</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    color: #ff1e56;
+    text-shadow: 0 0 10px #ff1e56, 0 0 20px #ff1e56;
+    margin-bottom: 20px;
+  }
+  table, .winner-section {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 15px #ff1e56;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 500px;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    text-align: center;
+  }
+  th {
+    background: #ff1e56;
+    color: #fff;
+    text-shadow: 0 0 8px #fff;
+  }
+  tr:hover { background: rgba(255,30,86,0.2); }
+  #pickWinnerBtn {
+    width: 100%;
+    padding: 12px;
+    background: #ff1e56;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ff1e56;
+  }
+  #pickWinnerBtn:hover {
+    box-shadow: 0 0 20px #ff1e56;
+    transform: scale(1.05);
+  }
+  .winner {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 0 10px #ff1e56,0 0 20px #ff1e56;
+    margin-top: 15px;
+  }
+</style>
+</head>
+<body>
+  <div class="winner">
+<button id="resetBtn">🗑️ Reset Semua Peserta</button>
+<h1>Daftar Peserta</h1>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nama</th>
+      <th>Telegram</th>
+      <th>Joined At</th>
+    </tr>
+  </thead>
+  <tbody id="userTable"></tbody>
+</table>
+
+<div class="winner-section">
+  <button id="pickWinnerBtn">🎉 Acak Pemenang</button>
+  <div class="winner" id="winnerName"></div>
+</div>
+
+<script>
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+function renderTable() {
+  const table = document.getElementById("userTable");
+  table.innerHTML = "";
+  users.forEach(u => {
+    const row = `<tr>
+      <td>${u.id}</td>
+      <td>${u.name}</td>
+      <td>${u.telegram}</td>
+      <td>${u.joinedAt}</td>
+    </tr>`;
+    table.innerHTML += row;
+  });
+}
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  if(confirm("Yakin ingin hapus semua peserta?")){
+    localStorage.removeItem("users");
+    location.reload();
+  }
+});
+document.getElementById("pickWinnerBtn").addEventListener("click", ()=>{
+  if(users.length === 0){
+    document.getElementById("winnerName").innerText = "❌ Belum ada peserta!";
+    return;
+  }
+  const winner = users[Math.floor(Math.random() * users.length)];
+  document.getElementById("winnerName").innerText = `🎉 Pemenang: ${winner.name} (${winner.telegram})`;
+});
+
+renderTable();
+</script>
+
+</body>
+</html>

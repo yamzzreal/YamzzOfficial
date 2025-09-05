@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join Giveaway</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+  }
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+    justify-content: center;
+  }
+  h1 {
+    color: #ff1e56;
+    text-shadow: 0 0 10px #ff1e56, 0 0 20px #ff1e56;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  form {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 15px #ff1e56;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  input {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+  }
+  button {
+    padding: 12px;
+    background: #ff1e56;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ff1e56;
+  }
+  button:hover {
+    box-shadow: 0 0 20px #ff1e56;
+    transform: scale(1.05);
+  }
+  .msg { margin-top: 10px; font-weight: bold; text-align:center; }
+</style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="container">
+<h1>🎉 Join Giveaway</h1>
+
+<form id="giveawayForm">
+  <input type="text" id="name" placeholder="Nama" required>
+  <input type="text" id="telegram" placeholder="Telegram" required>
+  <button type="submit">Gabung</button>
+  <div class="msg" id="msg"></div>
+</form>
+</div>
+
+<script>
+// ====== PARTICLE NETWORK EFFECT ======
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+});
+
+class Particle {
+  constructor() {
+    this.x = Math.random()*width;
+    this.y = Math.random()*height;
+    this.vx = (Math.random()-0.5)*0.5;
+    this.vy = (Math.random()-0.5)*0.5;
+    this.size = Math.random()*2 + 1;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if(this.x < 0 || this.x > width) this.vx *= -1;
+    if(this.y < 0 || this.y > height) this.vy *= -1;
+  }
+  draw() {
+    ctx.fillStyle = "#ff1e56";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+const particleCount = 100;
+let particles = [];
+for(let i=0;i<particleCount;i++) particles.push(new Particle());
+
+function connectParticles() {
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < 100){
+        ctx.strokeStyle = `rgba(255,30,86,${1 - dist/100})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0,0,width,height);
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  connectParticles();
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ====== JOIN GIVEAWAY ======
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+document.getElementById("giveawayForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const telegram = document.getElementById("telegram").value.trim();
+  
+  if(!name || !telegram){
+    document.getElementById("msg").innerText = "❌ Nama & Telegram wajib diisi!";
+    return;
+  }
+
+  const newUser = {
+    id: users.length + 1,
+    name,
+    telegram,
+    joinedAt: new Date().toLocaleString()
+  };
+  
+  users.push(newUser);
+  localStorage.setItem("users", JSON.stringify(users));
+  document.getElementById("msg").innerText = "✅ Berhasil join giveaway!";
+  document.getElementById("giveawayForm").reset();
+});
+</script>
+
+</body>
+</html>
